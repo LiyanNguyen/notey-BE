@@ -5,7 +5,7 @@ describe("notes API", () => {
   let testObjectId: string;
 
   it("GET", async () => {
-    const res = await request(app).get("/notes");
+    const res = await request(app).get("/notes?color=all&rating=ascending");
     expect(res.status).toEqual(200);
   });
 

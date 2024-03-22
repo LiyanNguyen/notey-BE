@@ -1,10 +1,17 @@
 import express from "express";
-import { NoteType, NoteModel } from "../models/noteModel";
+import { NoteType, NoteQueryType, NoteModel } from "../models/noteModel";
 
-export const getNotes = async (_: express.Request, res: express.Response) => {
+export const getNotes = async (req: express.Request, res: express.Response) => {
   try {
-    const users = await NoteModel.find();
-    return res.status(200).json(users);
+    const { color, rating, title } = req.query as unknown as NoteQueryType;
+
+    const query = {
+      ...(color === "all" ? {} : { color }),
+      ...(title ? { title: { $regex: title, $options: "i" } } : {})
+    };
+
+    const notes = await NoteModel.find(query).sort({ rating: rating });
+    return res.status(200).json(notes);
   } catch (error) {
     console.log(error);
     return res.sendStatus(400);

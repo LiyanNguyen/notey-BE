@@ -9,6 +9,12 @@ export type NoteType = {
   color: "blue" | "red" | "yellow" | "green" | "slate";
 };
 
+export type NoteQueryType = {
+  rating: "ascending" | "descending";
+  color: "blue" | "red" | "yellow" | "green" | "slate" | "all";
+  title?: string;
+};
+
 const NoteSchema = new mongoose.Schema(
   {
     title: { required: true, type: String, minlength: 5, maxlength: 25 },
