@@ -22,11 +22,14 @@ export const getNotes = async (req: express.Request, res: express.Response) => {
       }),
     };
 
+    const total = await NoteModel.countDocuments(query);
+    const pages = Math.ceil(total / limit);
+
     const notes = await NoteModel.find(query)
       .sort({ rating: rating })
       .skip(skip)
       .limit(limit);
-    return res.status(200).json(notes);
+    return res.status(200).json({ notes, total, pages, skip });
   } catch (error) {
     console.log(error);
     return res.sendStatus(400);
