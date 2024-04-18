@@ -3,11 +3,16 @@ import { NoteType, NoteQueryType, NoteModel } from "../models/noteModel";
 
 export const getNotes = async (req: express.Request, res: express.Response) => {
   try {
-    const { color, rating, title } = req.query as unknown as NoteQueryType;
+    const { color, rating, search } = req.query as unknown as NoteQueryType;
 
     const query = {
-      ...(color === "all" ? {} : { color }),
-      ...(title ? { title: { $regex: title, $options: "i" } } : {})
+      ...(color !== "all" && { color: color }),
+      ...(search && {
+        $or: [
+          { title: { $regex: search, $options: "i" } },
+          { description: { $regex: search, $options: "i" } },
+        ],
+      }),
     };
 
     const notes = await NoteModel.find(query).sort({ rating: rating });
