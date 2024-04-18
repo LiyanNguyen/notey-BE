@@ -13,6 +13,8 @@ export type NoteQueryType = {
   rating: "ascending" | "descending";
   color: "blue" | "red" | "yellow" | "green" | "slate" | "all";
   search: string;
+  page: number;
+  limit: number;
 };
 
 const NoteSchema = new mongoose.Schema(

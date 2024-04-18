@@ -3,7 +3,14 @@ import { NoteType, NoteQueryType, NoteModel } from "../models/noteModel";
 
 export const getNotes = async (req: express.Request, res: express.Response) => {
   try {
-    const { color, rating, search } = req.query as unknown as NoteQueryType;
+    const {
+      color,
+      rating,
+      search,
+      page = 1,
+      limit = 12,
+    } = req.query as unknown as NoteQueryType;
+    const skip = (page - 1) * limit;
 
     const query = {
       ...(color !== "all" && { color: color }),
@@ -15,7 +22,10 @@ export const getNotes = async (req: express.Request, res: express.Response) => {
       }),
     };
 
-    const notes = await NoteModel.find(query).sort({ rating: rating });
+    const notes = await NoteModel.find(query)
+      .sort({ rating: rating })
+      .skip(skip)
+      .limit(limit);
     return res.status(200).json(notes);
   } catch (error) {
     console.log(error);
