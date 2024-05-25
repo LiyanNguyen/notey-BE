@@ -1,5 +1,5 @@
 import express from "express";
-import { NoteType, NoteQueryType, NoteModel } from "../models/noteModel";
+import { NoteQueryType, NoteModel, INote } from "../models/noteModel";
 
 export const getNotes = async (req: express.Request, res: express.Response) => {
   try {
@@ -41,7 +41,7 @@ export const createNote = async (
   res: express.Response
 ) => {
   try {
-    const { title, description, rating, color }: NoteType = req.body;
+    const { title, description, rating, color }: INote = req.body;
 
     if (!title || !description || !rating || !color) {
       return res.sendStatus(400);
@@ -83,7 +83,7 @@ export const updateNote = async (
 ) => {
   try {
     const { id } = req.params;
-    const { title, description, rating, color }: NoteType = req.body;
+    const { title, description, rating, color }: INote = req.body;
 
     if (!title || !description || !rating || !color) {
       return res.sendStatus(400);

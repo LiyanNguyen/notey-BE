@@ -1,13 +1,4 @@
-import mongoose from "mongoose";
-
-export type NoteType = {
-  title: string;
-  description: string;
-  createdAt?: Date;
-  upddatedAt?: Date;
-  rating: number;
-  color: "blue" | "red" | "yellow" | "green" | "slate";
-};
+import mongoose, { Document, Schema } from "mongoose";
 
 export type NoteQueryType = {
   rating: "ascending" | "descending";
@@ -17,18 +8,43 @@ export type NoteQueryType = {
   limit: number;
 };
 
-const NoteSchema = new mongoose.Schema(
+export interface INote extends Document {
+  title: string;
+  description: string;
+  rating: number;
+  color: "blue" | "red" | "yellow" | "green" | "slate";
+}
+
+const NoteSchema: Schema<INote> = new Schema(
   {
-    title: { required: true, type: String, minlength: 5, maxlength: 25 },
-    description: { required: true, type: String, minlength: 5, maxlength: 150 },
-    rating: { required: true, type: Number, min: 1, max: 10 },
-    color: {
-      required: true,
+    title: {
       type: String,
+      required: true,
+      minlength: 5,
+      maxlength: 25,
+    },
+    description: {
+      type: String,
+      required: true,
+      minlength: 5,
+      maxlength: 150,
+    },
+    rating: {
+      type: Number,
+      required: true,
+      min: 1,
+      max: 10,
+    },
+    color: {
+      type: String,
+      required: true,
       enum: ["blue", "red", "yellow", "green", "slate"],
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
-export const NoteModel = mongoose.model("Note", NoteSchema);
+export const NoteModel =
+  mongoose.models.Note || mongoose.model<INote>("Note", NoteSchema);
