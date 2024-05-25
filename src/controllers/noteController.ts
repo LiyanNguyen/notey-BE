@@ -1,5 +1,5 @@
 import express from "express";
-import { NoteQueryType, NoteModel, INote } from "../models/noteModel";
+import { NoteModel, INoteQuery, INote } from "../models/noteModel";
 
 export const getNotes = async (req: express.Request, res: express.Response) => {
   try {
@@ -9,7 +9,7 @@ export const getNotes = async (req: express.Request, res: express.Response) => {
       search,
       page = 1,
       limit = 12,
-    } = req.query as unknown as NoteQueryType;
+    } = req.query as unknown as INoteQuery;
     const skip = (page - 1) * limit;
 
     const query = {

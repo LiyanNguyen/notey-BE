@@ -1,18 +1,18 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-export type NoteQueryType = {
-  rating: "ascending" | "descending";
-  color: "blue" | "red" | "yellow" | "green" | "slate" | "all";
-  search: string;
-  page: number;
-  limit: number;
-};
-
 export interface INote extends Document {
   title: string;
   description: string;
   rating: number;
   color: "blue" | "red" | "yellow" | "green" | "slate";
+}
+
+export interface INoteQuery extends Omit<INote, "color" | "rating"> {
+  color: INote["color"] | "all";
+  rating: "ascending" | "descending";
+  search?: string;
+  page?: number;
+  limit?: number;
 }
 
 const NoteSchema: Schema<INote> = new Schema(
