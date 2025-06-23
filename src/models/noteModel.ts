@@ -20,13 +20,13 @@ const NoteSchema: Schema<INote> = new Schema(
     title: {
       type: String,
       required: true,
-      minlength: 5,
+      minlength: 1,
       maxlength: 25,
     },
     description: {
       type: String,
       required: true,
-      minlength: 5,
+      minlength: 1,
       maxlength: 150,
     },
     rating: {
